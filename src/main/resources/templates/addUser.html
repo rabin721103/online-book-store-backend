@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <style>
+        .error {
+            color: red;
+            text-align: start;
+        }
+    </style>
+    <title>User Management System</title>
+</head>
+<body>
+<div  class="container" style="text-align: center">
+        <h1>Manage Users</h1>
+        <hr>
+        <h2 style="text-align: start">Create/Add User</h2>
+    <form action="#" th:action="@{/save}" th:object="${users}"
+          method="POST">
+            <div>
+                <input type="text" th:field="*{username}" id="username" placeholder="User Name" class="form-control mb-4 col-4">
+                <ul>
+                    <li th:each="err : ${#fields.errors('username')}" th:text="${err}" class="error"/>
+                </ul>
+            </div>
+            <div>
+                <input type="password" th:field="*{password}" id="password" placeholder="User Password" class="form-control mb-4 col-4">
+                <ul>
+                    <li th:each="err : ${#fields.errors('password')}" th:text="${err}" class="error"/>
+                </ul>
+            </div>
+            <div>
+                <input type="email" th:field="*{email}" id="email" placeholder="E-mail" class="form-control mb-4 col-4">
+                <ul>
+                    <li th:each="err : ${#fields.errors('email')}" th:text="${err}" class="error"/>
+                </ul>
+            </div>
+
+            <div>
+                <select name="role" th:field="*{role}" id="role"  class="form-control mb-4 col-4">
+                    <option value="USER">USER</option>
+                    <option value="SUPERVISOR">SUPERVISOR</option>
+                    <option value="ADMIN">ADMIN</option>
+
+<!--                <input type="text" th:field="*{role}" id="role" placeholder="Enter Role" class="form-control mb-4 col-4">-->
+                <ul>
+                    <li th:each="err : ${#fields.errors('role')}" th:text="${err}" class="error"/>
+                </ul>
+                </select>
+            </div>
+
+        <div style="display:flex; justify-content: normal">
+        <button type="submit" class="btn btn-info col-2" style="justify-content: start; margin: 5px"  >Save User</button>
+        <button class="btn btn-outline-dark btn-sm" style="background-color: dimgray"> <a th:href="@{/}" style="margin: 15px; color: white"> Back to User List</a></button>
+        </div>
+    </form>
+    <hr>
+
+</div>
+</body>
+</html>
