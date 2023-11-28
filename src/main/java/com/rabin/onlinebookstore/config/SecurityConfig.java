@@ -1,71 +1,44 @@
 package com.rabin.onlinebookstore.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.rabin.onlinebookstore.utils.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-
-import javax.sql.DataSource;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig {
-    @Autowired
-    private DataSource dataSource;
-    @Autowired
-    private UserDetailsService userDetailsService;
+public class SecurityConfig{
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf(AbstractHttpConfigurer::disable).cors(c -> c.configurationSource(corsFilter()))
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(HttpMethod.GET,"/").hasAnyRole("USER","ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/addUsers/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST,"/save/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/delete/**").hasRole("ADMIN")
-                        .requestMatchers("/update/**").hasRole("ADMIN")
-
+                        .requestMatchers(("/**")).permitAll()
                         .anyRequest().authenticated()
-                )
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults());
+                );
 
+
+        http.addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-   /* @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails rabin = User.builder().username("rabin")
-                .password(passwordEncoder().encode("12345"))
-                .roles("USER")
-                .build();
-        UserDetails kalyan = User.builder().username("kalyan")
-                .password(passwordEncoder().encode("abcdef"))
-                .roles("USER","ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(rabin,kalyan);
-    }*/
-
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public CorsConfigurationSource corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
-    @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-    }
 
 }

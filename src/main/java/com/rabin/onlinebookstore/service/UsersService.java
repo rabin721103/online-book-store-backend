@@ -4,6 +4,7 @@ import com.rabin.onlinebookstore.utils.ResponseWrapper;
 import com.rabin.onlinebookstore.model.Users;
 import com.rabin.onlinebookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,11 @@ import java.util.Optional;
 
 @Service
 public class UsersService {
+
+
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     List <Users> users = new ArrayList<>();
     public List<Users> getAllUsers() {
         return userRepository.findAll(Sort.by("userId"));
@@ -28,8 +29,12 @@ public class UsersService {
         return optionalUsers.orElse(null);
     }
     public Users saveUser(Users users){
-        users.setPassword(passwordEncoder.encode(users.getPassword()));
         return userRepository.save(users);
+    }
+
+
+    public Users logIn (String username, String password){
+        return userRepository.findUserByUsernameAndPassword(username, password);
     }
 
     public Users updateUser(int id, Users updatedUser){
@@ -39,7 +44,7 @@ public class UsersService {
 
             // Update properties of the existing user with values from the updated user
             existingUser.setUserId(id);
-            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            existingUser.setPassword(updatedUser.getPassword());
             existingUser.setUsername(updatedUser.getUsername());
             existingUser.setRole(updatedUser.getRole());
             existingUser.setEmail(updatedUser.getEmail());

@@ -67,11 +67,11 @@ public class BooksController {
         }
     }
     @DeleteMapping("/{bookId}")
-    public ResponseEntity<ResponseWrapper> deleteBook(@PathVariable int bookId) {
+    public ResponseWrapper deleteBook(@PathVariable int bookId) {
         booksService.deleteBook(bookId);
         ResponseWrapper response = new ResponseWrapper();
         response.setStatusCode(HttpStatus.OK.value());
         response.setMessage("book deleted successfully");
-        return ResponseEntity.ok(response);
+        return new ResponseWrapper(true, 200, "Successfully deleted", null);
     }
 }
