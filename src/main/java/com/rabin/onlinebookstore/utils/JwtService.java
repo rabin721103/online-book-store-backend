@@ -4,6 +4,7 @@ import com.rabin.onlinebookstore.model.Users;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -16,10 +17,15 @@ public class JwtService {
 
     public static String extractToken(HttpServletRequest request) {
         try {
-            return request.getHeader("Authorization");
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("token")) {
+                    return cookie.getValue();
+                }
+            }
         } catch (NullPointerException ex) {
             return null;
         }
+        return null;
     }
 
     public boolean validateToken(String token) {
