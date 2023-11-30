@@ -42,6 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
             } else {
                 request.setAttribute("userId", userId);
                 request.setAttribute("username", username);
+                request.setAttribute("role", role);
                 filterChain.doFilter(request, response);
             }
         }

@@ -4,8 +4,12 @@ import com.rabin.onlinebookstore.model.Cart;
 import com.rabin.onlinebookstore.model.Users;
 import com.rabin.onlinebookstore.repository.CartRepository;
 import com.rabin.onlinebookstore.utils.CartDto;
+import com.rabin.onlinebookstore.utils.CustomException;
 import com.rabin.onlinebookstore.utils.UserNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,22 +27,34 @@ public class CartService {
 
     public List<CartDto> getBooksFromCart(long userId) {
         List<Cart> cartList = cartRepository.findAllBooksByUser(userId);
-        List<CartDto> cartResDtoList = new ArrayList<>();
+        List<CartDto> cartDtoList = new ArrayList<>();
         for (Cart cart : cartList) {
-            cartResDtoList.add(new CartDto(cart.getCartId(), cart.getBook(), cart.getQuantity()));
+            cartDtoList.add(new CartDto(cart.getCartId(), cart.getBook(), cart.getQuantity()));
         }
-        return cartResDtoList;
+        return cartDtoList;
     }
 
     public CartDto addBookToCart(Cart cart) {
-        Cart newCart = cartRepository.save(cart);
-        return new CartDto(newCart.getCartId(), newCart.getBook(), newCart.getQuantity());
+        try{
+            if (cart!= null){
+                Cart newCart = cartRepository.save(cart);
+                return new CartDto(newCart.getCartId(), newCart.getBook(), newCart.getQuantity());
+            }
+            throw new CustomException("Invalid bookId");
+        }
+        catch (CustomException ex) {
+            // Log the exception and rethrow or handle as appropriate
+            throw new CustomException(
+                    "Failed to add book to cart");
+        }
+
     }
     public CartDto updateCart(Long cartId, Integer quantity, Integer userId) {
+        try{
         Optional<Cart> optionalCart = cartRepository.findById(cartId);
         if (optionalCart.isPresent()) {
             Cart existingCart = optionalCart.get();
-            if (existingCart.getUser().getUserId()==userId) {
+            if (existingCart.getUser().getUserId() == userId) {
 
                 existingCart.setQuantity(quantity);
                 Cart cart = cartRepository.save(existingCart);
@@ -46,9 +62,13 @@ public class CartService {
             } else {
                 return null;
             }
-
         }
-        return null;
+        throw new CustomException("Cart not found with ID: " + cartId);
+    }
+        catch (CustomException ex) {
+            // Log the exception and rethrow or handle as appropriate
+            throw new CustomException("Failed to update cart");
+        }
     }
 
     public void deleteCart(Long id, Integer userId) {
@@ -59,7 +79,7 @@ public class CartService {
                 cartRepository.deleteById(id);
             } else {
 
-                throw new UserNotFoundException("User not found with ID: " + id);
+                throw new CustomException("User not found with ID: " + id);
             }
         }
     }
