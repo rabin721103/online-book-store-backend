@@ -34,38 +34,33 @@ public class CartService {
         return cartDtoList;
     }
 
-    public CartDto addBookToCart(Cart cart) {
-        try{
-            if (cart!= null){
-                Cart newCart = cartRepository.save(cart);
-                return new CartDto(newCart.getCartId(), newCart.getBook(), newCart.getQuantity());
-            }
-            throw new CustomException("Invalid bookId");
-        }
-        catch (CustomException ex) {
-            // Log the exception and rethrow or handle as appropriate
-            throw new CustomException(
-                    "Failed to add book to cart");
-        }
+    public Cart findCartByUserIdAndBookId(int userId, int bookId) {
+        return cartRepository.findCartByUserIdAndBookId(userId, bookId);
+    }
+
+
+    public CartDto addBookToCart(Cart newCart) {
+        Cart savedCart = cartRepository.save(newCart);
+        return new CartDto(savedCart.getCartId(), savedCart.getBook(), savedCart.getQuantity());
 
     }
+
     public CartDto updateCart(Long cartId, Integer quantity, Integer userId) {
-        try{
-        Optional<Cart> optionalCart = cartRepository.findById(cartId);
-        if (optionalCart.isPresent()) {
-            Cart existingCart = optionalCart.get();
-            if (existingCart.getUser().getUserId() == userId) {
+        try {
+            Optional<Cart> optionalCart = cartRepository.findById(cartId);
+            if (optionalCart.isPresent()) {
+                Cart existingCart = optionalCart.get();
+                if (existingCart.getUser().getUserId() == userId) {
 
-                existingCart.setQuantity(quantity);
-                Cart cart = cartRepository.save(existingCart);
-                return new CartDto(cart.getCartId(), cart.getBook(), cart.getQuantity());
-            } else {
-                return null;
+                    existingCart.setQuantity(quantity);
+                    Cart cart = cartRepository.save(existingCart);
+                    return new CartDto(cart.getCartId(), cart.getBook(), cart.getQuantity());
+                } else {
+                    return null;
+                }
             }
-        }
-        throw new CustomException("Cart not found with ID: " + cartId);
-    }
-        catch (CustomException ex) {
+            throw new CustomException("Cart not found with ID: " + cartId);
+        } catch (CustomException ex) {
             // Log the exception and rethrow or handle as appropriate
             throw new CustomException("Failed to update cart");
         }
@@ -75,7 +70,7 @@ public class CartService {
         Optional<Cart> optionalCart = cartRepository.findById(id);
         if (optionalCart.isPresent()) {
             Cart existingCart = optionalCart.get();
-            if (existingCart.getUser().getUserId()==userId) {
+            if (existingCart.getUser().getUserId() == userId) {
                 cartRepository.deleteById(id);
             } else {
 

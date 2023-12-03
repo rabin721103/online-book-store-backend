@@ -16,7 +16,7 @@ public class CartDto {
         this.quantity = quantity;
     }
 
-    public long getCartxId() {
+    public long getCartId() {
         return cartId;
     }
 
