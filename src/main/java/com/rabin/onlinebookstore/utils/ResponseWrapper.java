@@ -6,6 +6,25 @@ public class ResponseWrapper {
     private Object response;
     private  boolean success;
 
+    private long totalItems;
+    private int totalPages;
+
+    public long getTotalItems() {
+        return totalItems;
+    }
+
+    public void setTotalItems(long totalItems) {
+        this.totalItems = totalItems;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
+
     public ResponseWrapper() {
     }
 

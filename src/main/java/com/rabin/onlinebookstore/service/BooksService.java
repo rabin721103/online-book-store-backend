@@ -4,6 +4,9 @@ import com.rabin.onlinebookstore.utils.ResponseWrapper;
 import com.rabin.onlinebookstore.model.Books;
 import com.rabin.onlinebookstore.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,10 +17,13 @@ import java.util.Optional;
 public class BooksService {
     @Autowired
     BooksRepository booksRepository;
+    int size = 4;
     List<Books> books = new ArrayList<Books>();
-    public List<Books> getAllBooks() {
-        return booksRepository.findAll();
+    public Page<Books> getAllBooks(int page) {
+        Pageable pageable = PageRequest.of(page-1, size);
+        return booksRepository.findAll(pageable);
     }
+
     public Books getBooksById(int id) {
         Optional<Books> optionalBooks = booksRepository.findById(id);
         return optionalBooks.orElse(null);
