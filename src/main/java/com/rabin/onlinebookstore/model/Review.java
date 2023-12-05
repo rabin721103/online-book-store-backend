@@ -10,7 +10,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
-    private long review_id;
+    private long reviewId;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
@@ -22,6 +22,9 @@ public class Review {
     @Column(name = "comment")
     private String comment;
 
+    @Column(name = "date")
+    private LocalDateTime date = LocalDateTime.now();
+
     public Review(Users user, Books book, int rating, String comment) {
         this.user = user;
         this.book = book;
@@ -29,12 +32,16 @@ public class Review {
         this.comment = comment;
     }
 
-    public long getReview_id() {
-        return review_id;
+    public Review() {
+
     }
 
-    public void setReview_id(long review_id) {
-        this.review_id = review_id;
+    public long getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(long reviewIdd) {
+        this.reviewId = reviewId;
     }
 
     public Users getUser() {
@@ -77,6 +84,5 @@ public class Review {
         this.date = date;
     }
 
-    @Column(name = "date")
-    private LocalDateTime date = LocalDateTime.now();
+
 }

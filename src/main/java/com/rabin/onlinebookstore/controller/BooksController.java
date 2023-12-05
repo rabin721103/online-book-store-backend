@@ -1,18 +1,32 @@
 package com.rabin.onlinebookstore.controller;
 
+import com.rabin.onlinebookstore.service.ReviewService;
+import com.rabin.onlinebookstore.utils.BookResDto;
 import com.rabin.onlinebookstore.utils.ResponseWrapper;
 import com.rabin.onlinebookstore.model.Books;
 import com.rabin.onlinebookstore.service.BooksService;
+import com.rabin.onlinebookstore.utils.ReviewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/books")
 public class BooksController {
+
+    private final BooksService booksService;
+    private final ReviewService reviewService;
     @Autowired
-    BooksService booksService;
+    public BooksController(BooksService booksService, ReviewService reviewService) {
+    this.booksService = booksService;
+    this.reviewService = reviewService;
+    }
+
+
 
     @GetMapping("/")
     private ResponseWrapper getAllBooks(@RequestParam(name = "page" ,defaultValue = "1") int page){
@@ -45,10 +59,17 @@ public class BooksController {
     {
         Books books = booksService.getBooksById(bookId);
         if (books != null) {
+            Map<String, Object> rating = reviewService.getSingleBookRating(books.getBookId());
+            List<ReviewDto> reviews = reviewService.getAllReviewsByBook(books.getBookId());
+            float overallRating = Float.parseFloat(rating.get("overall_rating").toString());
+            long numRatings = Long.parseLong(rating.get("num_reviews").toString());
+            BookResDto bookResDto = new BookResDto(books, overallRating, numRatings);
+            bookResDto.setReviews(reviews);
+
             ResponseWrapper response = new ResponseWrapper();
             response.setStatusCode(200);
             response.setMessage("Book retrieved successfully");
-            response.setResponse(books);
+            response.setResponse(bookResDto);
             response.setSuccess(true);
             return response;
         } else
