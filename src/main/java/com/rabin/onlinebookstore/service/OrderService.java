@@ -6,6 +6,7 @@ import com.rabin.onlinebookstore.repository.CartRepository;
 import com.rabin.onlinebookstore.repository.OrderRepository;
 import com.rabin.onlinebookstore.utils.CustomException;
 import com.rabin.onlinebookstore.utils.ResponseWrapper;
+import jakarta.transaction.Transactional;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -41,6 +42,7 @@ public class OrderService {
         }
     }
 
+    @Transactional
     public ResponseWrapper placeOrder(long userId) {
         List<Cart> cartList = cartRepository.findAllBooksByUser(userId);
 

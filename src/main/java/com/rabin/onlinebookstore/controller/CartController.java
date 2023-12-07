@@ -67,11 +67,10 @@ public class CartController {
     public ResponseWrapper deleteCart(@PathVariable Long cartId, HttpServletRequest request) {
         Integer userId = (Integer) request.getAttribute("userId");
         cartService.deleteCart(cartId, userId);
-        ResponseWrapper response = new ResponseWrapper(true, 200, ("Cart with" + cartId + "Deleted Successfully"), cartId);
-//        response.setStatusCode(HttpStatus.OK.value());
+        //        response.setStatusCode(HttpStatus.OK.value());
 //        response.setMessage("User deleted successfully");
 //        response.setResponse(cartId);
-        return response;
+        return new ResponseWrapper(true, 200, ("Cart Deleted Successfully"), cartId);
 
     }
 

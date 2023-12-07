@@ -19,9 +19,9 @@ public class BooksService {
     BooksRepository booksRepository;
     int size = 4;
     List<Books> books = new ArrayList<Books>();
-    public Page<Books> getAllBooks(int page) {
-        Pageable pageable = PageRequest.of(page-1, size);
-        return booksRepository.findAll(pageable);
+    public Page<Books> getAllBooks(String title,String author, String genre, int pageNo) {
+        PageRequest pageable = PageRequest.of(pageNo -1 , size);
+        return booksRepository.findAllByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrGenreContainingIgnoreCase( title, author, genre, pageable);
     }
 
     public Books getBooksById(int id) {

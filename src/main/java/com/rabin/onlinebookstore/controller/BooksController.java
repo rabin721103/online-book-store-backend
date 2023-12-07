@@ -29,9 +29,11 @@ public class BooksController {
 
 
     @GetMapping("/")
-    private ResponseWrapper getAllBooks(@RequestParam(name = "page" ,defaultValue = "1") int page){
-
-        Page<Books> booksPage = booksService.getAllBooks(page);
+    private ResponseWrapper getAllBooks(@RequestParam(name = "query", defaultValue = "", required = false) String title,
+                                                       @RequestParam(name = "query", defaultValue = "", required = false) String author,
+                                                       @RequestParam(name = "query", defaultValue = "", required = false) String genre,
+                                                       @RequestParam(name = "pageNo", defaultValue = "1") int pageNo) {
+        Page<Books> booksPage = booksService.getAllBooks(title,author,genre,pageNo);
         long totalItems = booksPage.getTotalElements();
         int totalPages = booksPage.getTotalPages();
         ResponseWrapper response = new ResponseWrapper();
