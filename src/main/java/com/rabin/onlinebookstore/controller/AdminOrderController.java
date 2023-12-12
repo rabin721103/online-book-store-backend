@@ -21,7 +21,7 @@ public class AdminOrderController {
 
     @PutMapping("/{orderId}")
     public ResponseWrapper updateOrderStatus(@PathVariable long orderId, @RequestBody String status) {
-        String statusStr = status.replaceAll("\"", "");
+        String statusStr = status.replace("\"", "");
         return orderService.updateOrderStatus(orderId, statusStr);
     }
 }

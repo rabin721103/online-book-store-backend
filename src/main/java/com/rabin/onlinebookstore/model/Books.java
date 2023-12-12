@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -22,6 +24,12 @@ public class Books {
     private int price;
     @Column
     private boolean availability;
+  /*  @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    private List<Cart> carts;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    private List<Order> orders;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    private List<Review> reviews;*/
 
 
 }

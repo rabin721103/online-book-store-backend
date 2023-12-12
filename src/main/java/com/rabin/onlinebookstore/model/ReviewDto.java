@@ -1,4 +1,4 @@
-package com.rabin.onlinebookstore.utils;
+package com.rabin.onlinebookstore.model;
 
 import com.rabin.onlinebookstore.model.Review;
 

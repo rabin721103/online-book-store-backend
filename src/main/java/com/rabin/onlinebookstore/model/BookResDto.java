@@ -1,6 +1,4 @@
-package com.rabin.onlinebookstore.utils;
-
-import com.rabin.onlinebookstore.model.Books;
+package com.rabin.onlinebookstore.model;
 
 import java.util.List;
 

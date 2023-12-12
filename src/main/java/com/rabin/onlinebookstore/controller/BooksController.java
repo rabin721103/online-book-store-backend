@@ -1,11 +1,11 @@
 package com.rabin.onlinebookstore.controller;
 
 import com.rabin.onlinebookstore.service.ReviewService;
-import com.rabin.onlinebookstore.utils.BookResDto;
+import com.rabin.onlinebookstore.model.BookResDto;
 import com.rabin.onlinebookstore.utils.ResponseWrapper;
 import com.rabin.onlinebookstore.model.Books;
 import com.rabin.onlinebookstore.service.BooksService;
-import com.rabin.onlinebookstore.utils.ReviewDto;
+import com.rabin.onlinebookstore.model.ReviewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
@@ -17,7 +17,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/books")
 public class BooksController {
-
     private final BooksService booksService;
     private final ReviewService reviewService;
     @Autowired
@@ -25,11 +24,8 @@ public class BooksController {
     this.booksService = booksService;
     this.reviewService = reviewService;
     }
-
-
-
     @GetMapping("/")
-    private ResponseWrapper getAllBooks(@RequestParam(name = "query", defaultValue = "", required = false) String title,
+    public ResponseWrapper getAllBooks(@RequestParam(name = "query", defaultValue = "", required = false) String title,
                                                        @RequestParam(name = "query", defaultValue = "", required = false) String author,
                                                        @RequestParam(name = "query", defaultValue = "", required = false) String genre,
                                                        @RequestParam(name = "pageNo", defaultValue = "1") int pageNo) {
@@ -45,19 +41,8 @@ public class BooksController {
         response.setSuccess(true);
         return response;
     }
-
-    //    @GetMapping("/")
-//    private ResponseEntity<ResponseWrapper> getAllBooks()
-//    {
-//        booksService.getAllBooks();
-//        ResponseWrapper response = new ResponseWrapper();
-//        response.setStatusCode(HttpStatus.OK.value());
-//        response.setMessage("Book retrieved successfully");
-//        response.setResponse(booksService.getAllBooks());
-//        return ResponseEntity.ok(response);
-//    }
     @GetMapping("/{bookId}")
-    private ResponseWrapper getBooks(@PathVariable("bookId") int bookId)
+    public ResponseWrapper getBooks(@PathVariable("bookId") int bookId)
     {
         Books books = booksService.getBooksById(bookId);
         if (books != null) {
@@ -84,7 +69,7 @@ public class BooksController {
         }
     }
     @PostMapping("/")
-    private ResponseWrapper saveBook(@RequestBody Books books)
+    public ResponseWrapper saveBook(@RequestBody Books books)
     {
         booksService.saveOrUpdate(books);
         ResponseWrapper response = new ResponseWrapper();

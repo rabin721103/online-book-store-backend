@@ -1,4 +1,4 @@
-package com.rabin.onlinebookstore.utils;
+package com.rabin.onlinebookstore.model;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

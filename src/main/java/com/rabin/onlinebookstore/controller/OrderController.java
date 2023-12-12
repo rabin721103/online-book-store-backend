@@ -16,7 +16,17 @@ import java.util.List;
 @RequestMapping("/api/order")
 public class OrderController {
     private final OrderService orderService;
-
+    @GetMapping("/user-orders")
+    public ResponseWrapper getAllOrdersByUserId(HttpServletRequest request){
+        int userId = (int) request.getAttribute("userId");
+        List<Order> orderList = orderService.getAllOrdersByUserId(userId);
+        ResponseWrapper response = new ResponseWrapper();
+        response.setStatusCode(200);
+        response.setMessage("Order retrieved successfully");
+        response.setSuccess(true);
+        response.setResponse(orderList);
+        return response;
+    }
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }

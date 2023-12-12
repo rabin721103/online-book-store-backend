@@ -1,15 +1,10 @@
 package com.rabin.onlinebookstore.service;
 
 import com.rabin.onlinebookstore.model.Cart;
-import com.rabin.onlinebookstore.model.Users;
 import com.rabin.onlinebookstore.repository.CartRepository;
-import com.rabin.onlinebookstore.utils.CartDto;
+import com.rabin.onlinebookstore.model.CartDto;
 import com.rabin.onlinebookstore.utils.CustomException;
-import com.rabin.onlinebookstore.utils.UserNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

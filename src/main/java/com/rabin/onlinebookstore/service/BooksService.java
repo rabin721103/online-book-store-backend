@@ -1,12 +1,10 @@
 package com.rabin.onlinebookstore.service;
 
-import com.rabin.onlinebookstore.utils.ResponseWrapper;
 import com.rabin.onlinebookstore.model.Books;
 import com.rabin.onlinebookstore.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,12 +16,11 @@ public class BooksService {
     @Autowired
     BooksRepository booksRepository;
     int size = 4;
-    List<Books> books = new ArrayList<Books>();
-    public Page<Books> getAllBooks(String title,String author, String genre, int pageNo) {
-        PageRequest pageable = PageRequest.of(pageNo -1 , size);
-        return booksRepository.findAllByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrGenreContainingIgnoreCase( title, author, genre, pageable);
+    List<Books> books = new ArrayList<>();
+    public Page<Books> getAllBooks(String title, String author, String genre, int pageNo) {
+        PageRequest pageable = PageRequest.of(pageNo - 1, size);
+        return booksRepository.searchBooks(title, author, genre, pageable);
     }
-
     public Books getBooksById(int id) {
         Optional<Books> optionalBooks = booksRepository.findById(id);
         return optionalBooks.orElse(null);
@@ -46,11 +43,10 @@ public class BooksService {
         }
         return null;
     }
-    public ResponseWrapper deleteBook(int id) {
+    public void deleteBook(int id) {
         Optional<Books> optionalUsers = booksRepository.findById(id);
-        if (optionalUsers.isPresent()){
+        if (optionalUsers.isPresent()) {
             booksRepository.deleteById(id);
         }
-        return null;
     }
 }

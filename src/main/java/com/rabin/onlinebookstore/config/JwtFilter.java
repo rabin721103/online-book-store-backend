@@ -1,6 +1,7 @@
-package com.rabin.onlinebookstore.utils;
+package com.rabin.onlinebookstore.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabin.onlinebookstore.utils.ResponseWrapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,6 +1,6 @@
 package com.rabin.onlinebookstore.controller;
 
-import com.rabin.onlinebookstore.utils.JwtService;
+import com.rabin.onlinebookstore.config.JwtService;
 import com.rabin.onlinebookstore.utils.ResponseWrapper;
 import com.rabin.onlinebookstore.model.Users;
 import com.rabin.onlinebookstore.service.UsersService;
@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +18,7 @@ public class UsersController {
     @Autowired
     UsersService usersService;
     @PostMapping("/auth/register")
-    private ResponseWrapper registerUser(@Valid @RequestBody Users users) {
+    public ResponseWrapper registerUser(@Valid @RequestBody Users users) {
         usersService.saveUser(users);
         ResponseWrapper response = new ResponseWrapper();
         response.setStatusCode(HttpStatus.CREATED.value());
@@ -30,7 +29,7 @@ public class UsersController {
     }
 
     @PostMapping("/auth/login")
-    private ResponseWrapper loginUser(@Valid @RequestBody Users users, HttpServletResponse response) {
+    public ResponseWrapper loginUser(@Valid @RequestBody Users users, HttpServletResponse response) {
         Users user = usersService.logIn(users.getUsername(), users.getPassword());
 
         if(user != null){
@@ -47,11 +46,8 @@ public class UsersController {
             return new ResponseWrapper(false, 400, "User not found ", null);
         }
     }
-
-
-
     @GetMapping("/admin/users")
-    private ResponseWrapper getAllUser() {
+    public ResponseWrapper getAllUser() {
         usersService.getAllUsers();
         ResponseWrapper response = new ResponseWrapper();
         response.setStatusCode(HttpStatus.OK.value());
@@ -59,9 +55,8 @@ public class UsersController {
         response.setResponse(usersService.getAllUsers());
         return response;
     }
-
     @GetMapping("/profile")
-    private ResponseWrapper getProfile(HttpServletRequest request) {
+    public ResponseWrapper getProfile(HttpServletRequest request) {
         int userId = (int) request.getAttribute("userId");
         Users user = usersService.getUsersById(userId);
         if (user != null) {
@@ -80,7 +75,7 @@ public class UsersController {
         }
     }
     @GetMapping("/admin/users/{userId}")
-    private ResponseWrapper getUsersById(@PathVariable int userId) {
+    public ResponseWrapper getUsersById(@PathVariable int userId) {
         Users user = usersService.getUsersById(userId);
         if (user != null) {
             ResponseWrapper response = new ResponseWrapper();
@@ -96,7 +91,7 @@ public class UsersController {
         }
     }
     @PutMapping("/admin/users/{id}")
-    private ResponseWrapper updateUser(@PathVariable int id, @Valid @RequestBody Users updatedUsers) {
+    public ResponseWrapper updateUser(@PathVariable int id, @Valid @RequestBody Users updatedUsers) {
         Users optionalUsers = usersService.updateUser(id, updatedUsers);
         if (optionalUsers != null) {
             ResponseWrapper response = new ResponseWrapper();
@@ -112,7 +107,7 @@ public class UsersController {
         }
     }
     @DeleteMapping("/admin/users/{id}")
-    private ResponseWrapper deleteUser(@PathVariable("id") int id) {
+    public ResponseWrapper deleteUser(@PathVariable("id") int id) {
         usersService.deleteUser(id);
         ResponseWrapper response = new ResponseWrapper();
         response.setStatusCode(HttpStatus.OK.value());

@@ -4,7 +4,7 @@ import com.rabin.onlinebookstore.model.Books;
 import com.rabin.onlinebookstore.model.Cart;
 import com.rabin.onlinebookstore.model.Users;
 import com.rabin.onlinebookstore.service.CartService;
-import com.rabin.onlinebookstore.utils.CartDto;
+import com.rabin.onlinebookstore.model.CartDto;
 import com.rabin.onlinebookstore.utils.CustomException;
 import com.rabin.onlinebookstore.utils.ResponseWrapper;
 import jakarta.servlet.http.HttpServletRequest;

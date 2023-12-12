@@ -1,4 +1,4 @@
-package com.rabin.onlinebookstore.utils;
+package com.rabin.onlinebookstore.config;
 
 import com.rabin.onlinebookstore.model.Users;
 import io.jsonwebtoken.Claims;

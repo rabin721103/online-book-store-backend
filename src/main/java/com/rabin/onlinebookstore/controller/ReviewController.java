@@ -1,11 +1,10 @@
 package com.rabin.onlinebookstore.controller;
 
 import com.rabin.onlinebookstore.model.Review;
-import com.rabin.onlinebookstore.model.Users;
 import com.rabin.onlinebookstore.service.ReviewService;
-import com.rabin.onlinebookstore.utils.NewReviewDto;
+import com.rabin.onlinebookstore.model.NewReviewDto;
 import com.rabin.onlinebookstore.utils.ResponseWrapper;
-import com.rabin.onlinebookstore.utils.ReviewDto;
+import com.rabin.onlinebookstore.model.ReviewDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

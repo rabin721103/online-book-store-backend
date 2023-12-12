@@ -4,9 +4,9 @@ import com.rabin.onlinebookstore.model.Books;
 import com.rabin.onlinebookstore.model.Review;
 import com.rabin.onlinebookstore.model.Users;
 import com.rabin.onlinebookstore.repository.ReviewRepository;
-import com.rabin.onlinebookstore.utils.NewReviewDto;
+import com.rabin.onlinebookstore.model.NewReviewDto;
 import com.rabin.onlinebookstore.utils.ResponseWrapper;
-import com.rabin.onlinebookstore.utils.ReviewDto;
+import com.rabin.onlinebookstore.model.ReviewDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
